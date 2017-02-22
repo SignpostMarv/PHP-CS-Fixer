@@ -41,6 +41,8 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
         'singleItemSingleLine' => false,
         // if an interface extends multiple interfaces declared over multiple lines put each interface on its own line
         'multiLineExtendsEachSingleLine' => false,
+        // if an extends keyword is declared, put it on the same line as the classy name
+        'extendsMustBeOnSameLine' => true,
     );
 
     /**
@@ -156,6 +158,19 @@ interface Bar extends
 ',
                     array('multiLineExtendsEachSingleLine' => true)
                 ),
+                new CodeSample(
+'<?php
+class Foo extends Bar
+{}',
+                    array('extendsMustBeOnSameLine' => true)
+                ),
+                new CodeSample(
+'<?php
+class Foo
+    extends Bar
+{}',
+                    array('extendsMustBeOnSameLine' => false)
+                ),
             ),
             null,
             'Configure to have extra whitespace around the keywords of a class, trait or interface definition removed.',
@@ -211,11 +226,13 @@ interface Bar extends
         }
 
         // 4.1 The extends and implements keywords MUST be declared on the same line as the class name.
+        if ($this->config['extendsMustBeOnSameLine']) {
         $this->makeClassyDefinitionSingleLine(
             $tokens,
             $classDefInfo['anonymousClass'] ? $tokens->getPrevMeaningfulToken($classyIndex) : $classDefInfo['start'],
             $end
         );
+        }
     }
 
     /**
