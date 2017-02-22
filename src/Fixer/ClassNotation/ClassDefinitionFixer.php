@@ -227,11 +227,11 @@ class Foo
 
         // 4.1 The extends and implements keywords MUST be declared on the same line as the class name.
         if ($this->config['extendsMustBeOnSameLine']) {
-        $this->makeClassyDefinitionSingleLine(
-            $tokens,
-            $classDefInfo['anonymousClass'] ? $tokens->getPrevMeaningfulToken($classyIndex) : $classDefInfo['start'],
-            $end
-        );
+            $this->makeClassyDefinitionSingleLine(
+                $tokens,
+                $classDefInfo['anonymousClass'] ? $tokens->getPrevMeaningfulToken($classyIndex) : $classDefInfo['start'],
+                $end
+            );
         }
     }
 
